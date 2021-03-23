@@ -75,53 +75,61 @@ plot!((1:(periods*100))./100, etaParCS[1:end-1], markersize=0.3, color = 2,
 
 savefig("Figures/figMeanEta.png")
 ################################################################################
-realizations = 1:1
-om = 1.245
-period = (2*pi)/om
-#per=5.15015:-0.0001:5.04673;
-per=5.04673:0.001:5.15015;
-pylist1 = zeros(length(per), 100)
-omega = zeros(length(per))
-pylist_lyap = zeros(length(per), 7)
-#pylist2 = zeros(length(per), 100)
-#gal = zeros(length(per));
-eta_mean = zeros(length(per))
-#initial_cond = zeros(length(per), 7)
 
+realizations = 1:1
+om_initial = 1.22
+om_final = 1.25
+period_final = 2*pi/om_initial
+period_initial = 2*pi/om_final
+period_step = 0.001 # The step of bifurcation on period.
+period_range = period_initial:period_step:period_final # The range of bifurcation on period.
+n_points = 10 # The nr of points that we want to keep for each value of the stroboscopic variable.
+nr_period = 1000 # The nr of periods that we run the system plus nr of periods for the transient state.
+per_step = 0.01 # The proportion of period that we want as an output.
+
+pylist_lyap = zeros(length(period_range), 7)
+f1_max = zeros(length(period_range), n_points)
+eta_mean = zeros(length(period_range))
+omega = zeros(length(period_range))
 
 for j = 1:length(realizations)
   s = rand(6)
   u0 = [5*s[1], 5*s[2], 5*s[3], 5*s[4], 5*s[5], 5*s[6], 0]
 
-    for (i, period) in enumerate(per)
+    for (i, period) in enumerate(period_range)
 
+      # Solving the system
       om = (2*pi)/period
       set_parameter!(ds,6,om)
-      #initial_cond[i,:] = u0
-      data = trajectory(ds, 1000*period, dt=period*0.01, u0, Ttr = 1000*period)
+      data = trajectory(ds, nr_period*period, dt=period*per_step, u0, Ttr = nr_period*period)
 
+      # Calculating the mean value over time of eta parameter
       eta_par = sqrt.( (data[:,1]-data[:,3]).*(data[:,1]-data[:,3])  +  (data[:,4]-data[:,6]).*(data[:,4]-data[:,6]))
       eta_mean[i] = Statistics.mean(eta_par)
 
-      #corr[i] = Statistics.cor(data[:,1],data[:,3])
-
+      # Calculating all Lyapunov exponents
       reinit!(tinteg, u0, orthonormal(7, 7))
-      pylist_lyap[i,:] = lyapunovs(tinteg, 1000*period, 0.5*period, 1000*period)
+      pylist_lyap[i,:] = lyapunovs(tinteg, nr_period*period, 0.5*period, nr_period*period)
 
+      # Stroboscopic calculation. The maxima in each period.
+      z1 = zeros(nr_period-1)
+      s1 =convert(Int64,round(1.0/per_step,digits=0))
+      for i=1:nr_period-1
+         z1[i] = maximum( data[ i*s1+1:(i+1)*s1,1] ) # If you want stoboscopic in Φ2 variable you have to put 2 instead of 1.
+      end
 
-      #reinit!(tinteg, u0, orthonormal(7, 7))
-      #gal[i] = gali(tinteg, 5000, 5, 1e-15)[2][end]
+      # Holding only n_points for the stroboscopic map.
+      f1_max[i,:]=z1[nr_period-(n_points+1):nr_period-2]
 
-      #z1=data[1:1000:end,1]
-      #pylist1[i,:]=z1[3001:3100]
+      # We have to put some noise because the system is multistable.
       omega[i]=om
-      #u0 = [data[end,1],data[end,2],data[end,3],data[end,4],0]
       s = 0.00001*rand(4)
       u0 = [data[end,1],data[end,2]+s[1],data[end,3],data[end,4]+s[2],data[end,5]+s[3],data[end,6]+s[4],0]
-
       println(i,",",j,"")
   end
 end
+
+################################################################################
 
 plot(omega, pylist_lyap[:,1], markersize=1.0, color = 1, xlabel="Ω", ylabel="Lyapunovs", label = "L1", legend=:topleft)
 plot!(omega, pylist_lyap[:,2], markersize=1.0, color = 2, xlabel="Ω", ylabel="Lyapunovs", label = "L2", legend=:topleft)
@@ -129,14 +137,72 @@ plot!(omega, pylist_lyap[:,3], markersize=1.0, color = 3, xlabel="Ω", ylabel="L
 plot!(omega, pylist_lyap[:,4], markersize=1.0, color = 4, xlabel="Ω", ylabel="Lyapunovs", label = "L4", legend=:topleft)
 plot!(omega, pylist_lyap[:,5], markersize=1.0, color = 5, xlabel="Ω", ylabel="Lyapunovs", label = "L5", legend=:topleft)
 plot!(omega, pylist_lyap[:,6], markersize=1.0, color = 6, xlabel="Ω", ylabel="Lyapunovs", label = "L6", legend=:topleft)
-plot!(omega, pylist_lyap[:,7], markersize=1.0, color = 7, xlabel="Ω", ylabel="Lyapunovs", label = "L7", legend=:topleft)
+p01 = plot!(omega, pylist_lyap[:,7], markersize=1.0, color = 7, xlabel="Ω", ylabel="Lyapunovs", label = "L7", legend=:topleft)
 
-pylist_lyap[:,7]
-ss[1]
-savefig("Fig_01.png") #if you want to save the fig.
+p02 = plot(omega, eta_mean[:], markersize=1.0, color = 1, xlabel="Ω", ylabel="eta_mean", label = "")
 
-plot!(omega, eta_mean[:], markersize=1.0, color = 1, xlabel="Ω", ylabel="eta_mean", label = "")
-savefig("Fig_03.png") #if you want to save the fig.
+p03 = scatter(omega, f1_max, markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+
+plot(p01, p02, p03, layout = (3, 1))
+savefig("Figures/figStrobLyapEta.png")
+
+################################################################################
+
+nr_repetitions = 15 # The number of repetitions
+f01_max = zeros(length(period_range), nr_repetitions, n_points)
+omega01 = zeros(length(period_range))
+
+for j=1:nr_repetitions
+    s = rand(6)
+    u0 = [5*s[1], 5*s[2], 5*s[3], 5*s[4], 5*s[5], 5*s[6], 0]
+ for (i, period) in enumerate(period_range)
+   # Parameters.
+   om = (2*pi)/period
+   set_parameter!(ds,6,om)
+   #global nr_period, n_points, per_step
+
+   # Runing the system.
+   data = trajectory(ds, nr_period*period, dt=period*per_step, u0, Ttr = nr_period*period)
+
+   # In order to have the maxima in each period.
+   z1 = zeros(nr_period-1)
+   s1 =convert(Int64,round(1.0/per_step,digits=0))
+   for i=1:nr_period-1
+      z1[i] = maximum( data[ i*s1+1:(i+1)*s1,1] )
+   end
+
+   # Holding only n_points.
+   f01_max[i,j,:]=z1[nr_period-(n_points+1):nr_period-2]
+   omega01[i]=om
+
+   # We have to put some noise because the system is multistable.
+   s = 4*rand(4)
+   u0 = [data[end,1],data[end,2]+s[1],data[end,3],data[end,4]+s[2],data[end,5]+s[3],data[end,6]+s[4],0]
+
+    println(i,",",j,"")
+ end
+end
+
+scatter(omega01, f01_max[:,1,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,2,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,3,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,4,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,5,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,6,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,7,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,8,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,9,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,10,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,11,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,12,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,13,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,14,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+scatter!(omega01, f01_max[:,15,:], markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
+
+
+savefig("Figures/figStrob.png")
+
+################################################################################
 
 om_range = 1:1:104
 sum_p = zeros(length(om_range))
