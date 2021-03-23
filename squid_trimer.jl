@@ -1,5 +1,6 @@
 cd("C:/Users/User/Desktop/Trimer_Squid_Git")
 
+################################################################################
 
 using DifferentialEquations
 using Plots
@@ -7,6 +8,7 @@ using DynamicalSystems
 import Statistics
 using MAT
 
+################################################################################
 
 @inline @inbounds function squid(u, p, t)
    g, v, fac, fdc, e, om = p
@@ -21,68 +23,58 @@ using MAT
    return SVector{7}(du1, du2, du3, du4, du5, du6, du7)
 end
 
-u0 = [0.0612, 2.4443, 0.0612, 1.2859, 3.8265, 2.7072, 0]
+################################################################################
+
+u0 = [4.0612, 2.4443, 4.0612, 1.2859, 4.8265, 2.7072, 0]
 p = [0.024, 0.1369, 0.02, 0, 0.1075, 1.1]
 ds = ContinuousDynamicalSystem(squid, u0, p)
 tinteg =  tangent_integrator(ds, 7)
 
+################################################################################
 
+om = 1.233
+period = (2*pi)/om
+set_parameter!(ds,6,om)
+periods = 10000
+t_interval = periods*period
+dtt=period*0.01
+dataC = trajectory(ds, t_interval, dt = dtt, u0, Ttr = 10000*period)
+
+intPeriods = 9000
+plot( ((intPeriods*100):(periods*100))./100, dataC[(intPeriods*100):end-1,1], markersize=0.3, color = 1, xlabel="t", ylabel="Φ", label = "")
+p1 = plot!( ((intPeriods*100):(periods*100))./100, dataC[(intPeriods*100):end-1,3], markersize=0.3, color = 2, xlabel="t",  ylabel="Φ", label = "")
+#title = "This is Plotted using Plotly")
+p3 = plot( dataC[(intPeriods*100):end-1,1], dataC[(intPeriods*100):end-1,2], markersize=0.3, color = 1, xlabel="φ2",  ylabel="φ1", label = "")
+p5 = plot( dataC[(intPeriods*100):end-1,1], dataC[(intPeriods*100):end-1,3], markersize=0.3, color = 1, xlabel="φ3", ylabel="φ1", label = "")
 
 om = 1.24
 period = (2*pi)/om
 set_parameter!(ds,6,om)
-t_interval = 5000*period
-dtt=period*0.01
-data = trajectory(ds, t_interval, dt = dtt, u0, Ttr = 10000*period)
-eta_par = sqrt.( (data[:,1]-data[:,3]).*(data[:,1]-data[:,3])  +  (data[:,4]-data[:,6]).*(data[:,4]-data[:,6]))
-Statistics.mean(eta_par)
-(1:(100*100))./100
-plot!((1:(5000*100))./100, eta_par[1:end-1], markersize=0.3, color = 2, xlabel="1/T", ylabel="eta", label = "Ω = 1.24")
+dataCS = trajectory(ds, t_interval, dt = dtt, u0, Ttr = 10000*period)
 
-plot((9001:(100*100))./100, data[9001:end-1,1], markersize=0.3, color = 1, xlabel="t", ylabel="Φ")
-plot!((9001:(100*100))./100, data[9001:end-1,2], markersize=0.3, color = 2, xlabel="t", ylabel="Φ")
-plot!((9001:(100*100))./100, data[9001:end-1,3], markersize=0.3, color = 3, xlabel="t", ylabel="Φ")
+plot( ((intPeriods*100):(periods*100))./100, dataCS[(intPeriods*100):end-1,1], markersize=0.3, color = 1, xlabel="t", label = "")
+p2 = plot!( ((intPeriods*100):(periods*100))./100, dataCS[(intPeriods*100):end-1,3], markersize=0.3, color = 2, xlabel="t", label = "")
+p4 = plot( dataCS[(intPeriods*100):end-1,1], dataCS[(intPeriods*100):end-1,2], markersize=0.3, color = 1, xlabel="φ2", label = "")
+p6 = plot( dataCS[(intPeriods*100):end-1,1], dataCS[(intPeriods*100):end-1,3], markersize=0.3, color = 1, xlabel="φ3", label = "")
 
-savefig("Figures/Fig_02.png")
-#corr1 = Statistics.cor(data[2500000:end,1],data[2500000:end,3])
-#corr2 = Statistics.cor(data[2500000:end,1],data[2500000:end,2])
-#corr3 = Statistics.cor(data[2500000:end,2],data[2500000:end,3])
-#plot(data[2500000:3500000,2],data[2500000:3500000,5])
-#plot!(data[2500000:3500000,3],data[2500000:3500000,6])
-#plot!(data[2500000:3500000,1],data[2500000:3500000,4])
-#plot!(data[3000000:end,1])
-#plot(data[3000000:end,3])
-#plot!(data[2500000:end,2])
+plot(p1, p2, p3, p4, p5, p6, layout = (3, 2))
+savefig("Figures/figTimeSeries.png")
 
-#z1=data[1:end,1]
-#z3=data[1:end,3]
-#z4=data[1:end,4]
-#z6=data[1:end,6]
-#z2=data[1:end,2]
-#file = matopen("datat1.mat", "w")
-#write(file, "datat1", z1)
-#close(file)
-#file = matopen("datat3.mat", "w")
-#write(file, "datat3", z3)
-#close(file)
-#file = matopen("datat4.mat", "w")
-#write(file, "datat4", z4)
-#close(file)
-#file = matopen("datat6.mat", "w")
-#write(file, "datat6", z6)
-#close(file)
-#file = matopen("datat2.mat", "w")
-#write(file, "datat2", z2)
-#close(file)
+################################################################################
 
+etaParC = sqrt.( (dataC[:,1]-dataC[:,3]).*(dataC[:,1]-dataC[:,3])  +  (dataC[:,4]-dataC[:,6]).*(dataC[:,4]-dataC[:,6]))
+#Statistics.mean(etaParC)
+etaParCS = sqrt.( (dataCS[:,1]-dataCS[:,3]).*(dataCS[:,1]-dataCS[:,3])  +  (dataCS[:,4]-dataCS[:,6]).*(dataCS[:,4]-dataCS[:,6]))
 
-#reinit!(tinteg, u0, orthonormal(7, 7))
-#tinteg =  tangent_integrator(ds, 7)
-#lyap=lyapunovs(tinteg, 3500*period, 1*period, 1500*period)
-#reinit!(tinteg, u0, orthonormal(7, 7))
-#gal = gali(tinteg, 5000, 5, 1e-15)[2][end]
+plot((1:(periods*100))./100, etaParC[1:end-1], markersize=0.3, color = 1,
+ xlabel="1/T", ylabel="eta", label = "")
+plot!((1:(periods*100))./100, etaParCS[1:end-1], markersize=0.3, color = 2,
+ xlabel="1/T", ylabel="eta", label = "", title = "
+ η for Ω = 1.24
+ ")
 
-
+savefig("Figures/figMeanEta.png")
+################################################################################
 realizations = 1:1
 om = 1.245
 period = (2*pi)/om
@@ -157,27 +149,4 @@ omega
 scatter(omega[:], sum_p[:], markersize=3.0, color = 1)
 
 
-palette(:tab10)
-file = matopen("omega.mat", "w")
-write(file, "omega", omega)
-close(file)
-
-file = matopen("yt.mat", "w")
-write(file, "yt", pylist1)
-close(file)
-
-file = matopen("galt.mat", "w")
-write(file, "galt", gal)
-close(file)
-
-file = matopen("lyapt.mat", "w")
-write(file, "lyapt", pylist_lyap)
-close(file)
-
-file = matopen("corrt.mat", "w")
-write(file, "corrt", corr)
-close(file)
-
-file = matopen("ini_cont.mat", "w")
-write(file, "ini_cont", initial_cond)
-close(file)
+################################################################################
