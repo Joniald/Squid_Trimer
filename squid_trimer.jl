@@ -21,7 +21,6 @@ using MAT
    return SVector{7}(du1, du2, du3, du4, du5, du6, du7)
 end
 
-#u0 = [4.84, 0.0, 4.84, 0.0, 0.0, 0.0, 0]
 u0 = [0.0612, 2.4443, 0.0612, 1.2859, 3.8265, 2.7072, 0]
 p = [0.024, 0.1369, 0.02, 0, 0.1075, 1.1]
 ds = ContinuousDynamicalSystem(squid, u0, p)
@@ -44,7 +43,7 @@ plot((9001:(100*100))./100, data[9001:end-1,1], markersize=0.3, color = 1, xlabe
 plot!((9001:(100*100))./100, data[9001:end-1,2], markersize=0.3, color = 2, xlabel="t", ylabel="Φ")
 plot!((9001:(100*100))./100, data[9001:end-1,3], markersize=0.3, color = 3, xlabel="t", ylabel="Φ")
 
-savefig("Fig_02.png")
+savefig("Figures/Fig_02.png")
 #corr1 = Statistics.cor(data[2500000:end,1],data[2500000:end,3])
 #corr2 = Statistics.cor(data[2500000:end,1],data[2500000:end,2])
 #corr3 = Statistics.cor(data[2500000:end,2],data[2500000:end,3])
