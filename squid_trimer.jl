@@ -1,4 +1,4 @@
-cd("C:/Users/User/Desktop/Julia_All_Programs/Programs/Trimer_Results")
+cd("C:/Users/User/Desktop/Trimer_Squid_Git")
 
 
 using DifferentialEquations
