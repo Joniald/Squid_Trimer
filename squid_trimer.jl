@@ -26,6 +26,7 @@ end
 ################################################################################
 
 u0 = [4.0612, 2.4443, 4.0612, 1.2859, 4.8265, 2.7072, 0]
+#u0 = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0]
 p = [0.024, 0.1369, 0.02, 0, 0.1075, 1.1]
 ds = ContinuousDynamicalSystem(squid, u0, p)
 tinteg =  tangent_integrator(ds, 7)
@@ -76,12 +77,98 @@ plot!((1:(periods*100))./100, etaParCS[1:end-1], markersize=0.3, color = 2,
 savefig("Figures/figMeanEta.png")
 ################################################################################
 
+periods  = 10000
+t_interval, dtt = periods*period, period*0.01
+
+#Periodic Synchronization
+om, eta = 1.21, 0.16
+period = (2*pi)/om
+set_parameter!(ds,6,om)
+set_parameter!(ds,5,eta)
+dataPS = trajectory(ds, t_interval, dt = dtt, u0, Ttr = 10000*period)
+etaParPS = sqrt.( (dataPS[:,1]-dataPS[:,3]).*(dataPS[:,1]-dataPS[:,3])  +  (dataPS[:,4]-dataPS[:,6]).*(dataPS[:,4]-dataPS[:,6]))
+intPeriods = 9985
+pPS2 = plot( ((intPeriods*100):(periods*100))./100, etaParPS[(intPeriods*100):end-1], ylim=(0.0, 1.0), markersize=0.3, color = 1, xlabel="1/T", ylabel="eta", label = "")
+plot( ((intPeriods*100):(periods*100))./100, dataPS[(intPeriods*100):end-1,1], markersize=0.3, color = 1, xlabel="t", ylabel="Φ", label = "")
+pPS1 = plot!( ((intPeriods*100):(periods*100))./100, dataPS[(intPeriods*100):end-1,3], markersize=0.3, color = 2, xlabel="t",  ylabel="Φ", label = "")
+
+#Periodic UnSynchronization
+om, eta = 1.24, 0.07
+period = (2*pi)/om
+set_parameter!(ds,6,om)
+set_parameter!(ds,5,eta)
+dataPUn = trajectory(ds, t_interval, dt = dtt, u0, Ttr = 10000*period)
+etaParPUn = sqrt.( (dataPUn[:,1]-dataPUn[:,3]).*(dataPUn[:,1]-dataPUn[:,3])  +  (dataPUn[:,4]-dataPUn[:,6]).*(dataPUn[:,4]-dataPUn[:,6]))
+intPeriods = 9985
+pPUn2 = plot( ((intPeriods*100):(periods*100))./100, etaParPUn[(intPeriods*100):end-1], ylim=(0.0, 1.0), markersize=0.3, color = 1, xlabel="1/T", ylabel="eta", label = "")
+plot( ((intPeriods*100):(periods*100))./100, dataPUn[(intPeriods*100):end-1,1], markersize=0.3, color = 1, xlabel="t", ylabel="Φ", label = "")
+pPUn1 = plot!( ((intPeriods*100):(periods*100))./100, dataPUn[(intPeriods*100):end-1,3], markersize=0.3, color = 2, xlabel="t",  ylabel="Φ", label = "")
+
+#Periodic Intermeted Synchronization
+om, eta = 1.255, 0.118
+period = (2*pi)/om
+set_parameter!(ds,6,om)
+set_parameter!(ds,5,eta)
+dataPI = trajectory(ds, t_interval, dt = dtt, u0, Ttr = 10000*period)
+etaParPI = sqrt.( (dataPI[:,1]-dataPI[:,3]).*(dataPI[:,1]-dataPI[:,3])  +  (dataPI[:,4]-dataPI[:,6]).*(dataPI[:,4]-dataPI[:,6]))
+intPeriods = 9900
+pPI2 = plot( ((intPeriods*100):(periods*100))./100, etaParPI[(intPeriods*100):end-1], ylim=(0.0, 1.0), markersize=0.3, color = 1, xlabel="1/T", ylabel="eta", label = "")
+plot( ((intPeriods*100):(periods*100))./100, dataPI[(intPeriods*100):end-1,1], markersize=0.3, color = 1, xlabel="t", ylabel="Φ", label = "")
+pPI1 = plot!( ((intPeriods*100):(periods*100))./100, dataPI[(intPeriods*100):end-1,3], markersize=0.3, color = 2, xlabel="t",  ylabel="Φ", label = "")
+
+#Chaotic Synchronization
+om, eta = 1.235, 0.1
+period = (2*pi)/om
+set_parameter!(ds,6,om)
+set_parameter!(ds,5,eta)
+dataCS = trajectory(ds, t_interval, dt = dtt, u0, Ttr = 10000*period)
+etaParCS = sqrt.( (dataCS[:,1]-dataCS[:,3]).*(dataCS[:,1]-dataCS[:,3])  +  (dataCS[:,4]-dataCS[:,6]).*(dataCS[:,4]-dataCS[:,6]))
+intPeriods = 8000
+pCS2 = plot( ((intPeriods*100):(periods*100))./100, etaParCS[(intPeriods*100):end-1], ylim=(0.0, 1.0), markersize=0.3, color = 1, xlabel="1/T", ylabel="eta", label = "")
+plot( ((intPeriods*100):(periods*100))./100, dataCS[(intPeriods*100):end-1,1], markersize=0.3, color = 1, xlabel="t", ylabel="Φ", label = "")
+pCS1 = plot!( ((intPeriods*100):(periods*100))./100, dataCS[(intPeriods*100):end-1,3], markersize=0.3, color = 2, xlabel="t",  ylabel="Φ", label = "")
+
+#Chaotic Intermeted Synchronization
+om, eta = 1.23, 0.125
+period = (2*pi)/om
+set_parameter!(ds,6,om)
+set_parameter!(ds,5,eta)
+dataCI = trajectory(ds, t_interval, dt = dtt, u0, Ttr = 10000*period)
+etaParCI = sqrt.( (dataCI[:,1]-dataCI[:,3]).*(dataCI[:,1]-dataCI[:,3])  +  (dataCI[:,4]-dataCI[:,6]).*(dataCI[:,4]-dataCI[:,6]))
+intPeriods = 9000
+pCI2 = plot( ((intPeriods*100):(periods*100))./100, etaParCI[(intPeriods*100):end-1], ylim=(0.0, 1.0), markersize=0.3, color = 1, xlabel="1/T", ylabel="eta", label = "")
+plot( ((intPeriods*100):(periods*100))./100, dataCI[(intPeriods*100):end-1,1], markersize=0.3, color = 1, xlabel="t", ylabel="Φ", label = "")
+pCI1 = plot!( ((intPeriods*100):(periods*100))./100, dataCI[(intPeriods*100):end-1,3], markersize=0.3, color = 2, xlabel="t",  ylabel="Φ", label = "")
+
+# Hyper Chaotic Intermeted Synchronization
+om, eta = 1.23, 0.11
+period = (2*pi)/om
+set_parameter!(ds,6,om)
+set_parameter!(ds,5,eta)
+dataHCI = trajectory(ds, t_interval, dt = dtt, u0, Ttr = 10000*period)
+etaParHCI = sqrt.( (dataHCI[:,1]-dataHCI[:,3]).*(dataHCI[:,1]-dataHCI[:,3])  +  (dataHCI[:,4]-dataHCI[:,6]).*(dataHCI[:,4]-dataHCI[:,6]))
+intPeriods = 9000
+pHCI2 = plot( ((intPeriods*100):(periods*100))./100, etaParHCI[(intPeriods*100):end-1], ylim=(0.0, 1.0), markersize=0.3, color = 1, xlabel="1/T", ylabel="eta", label = "")
+plot( ((intPeriods*100):(periods*100))./100, dataHCI[(intPeriods*100):end-1,1], markersize=0.3, color = 1, xlabel="t", ylabel="Φ", label = "")
+pHCI1 = plot!( ((intPeriods*100):(periods*100))./100, dataHCI[(intPeriods*100):end-1,3], markersize=0.3, color = 2, xlabel="t",  ylabel="Φ", label = "")
+
+plot(pPS1, pPS2, pPUn1, pPUn2, layout = (2, 2))
+savefig("Figures/figTSParam01.png")
+
+plot(pPI1, pPI2, pCS1, pCS2, layout = (2, 2))
+savefig("Figures/figTSParam02.png")
+
+plot(pCI1, pCI2, pHCI1, pHCI2, layout = (2, 2))
+savefig("Figures/figTSParam03.png")
+
+################################################################################
+
 realizations = 1:1
-om_initial = 1.22
+om_initial = 1.223
 om_final = 1.25
 period_final = 2*pi/om_initial
 period_initial = 2*pi/om_final
-period_step = 0.001 # The step of bifurcation on period.
+period_step = 0.0001 # The step of bifurcation on period.
 period_range = period_initial:period_step:period_final # The range of bifurcation on period.
 n_points = 10 # The nr of points that we want to keep for each value of the stroboscopic variable.
 nr_period = 1000 # The nr of periods that we run the system plus nr of periods for the transient state.
@@ -139,12 +226,23 @@ plot!(omega, pylist_lyap[:,5], markersize=1.0, color = 5, xlabel="Ω", ylabel="L
 plot!(omega, pylist_lyap[:,6], markersize=1.0, color = 6, xlabel="Ω", ylabel="Lyapunovs", label = "L6", legend=:topleft)
 p01 = plot!(omega, pylist_lyap[:,7], markersize=1.0, color = 7, xlabel="Ω", ylabel="Lyapunovs", label = "L7", legend=:topleft)
 
+plot(omega, pylist_lyap[:,1], markersize=1.0, color = 1, xlabel="Ω", ylabel="Lyapunovs", label = "")
+plot!(omega, pylist_lyap[:,2], markersize=1.0, color = 2, xlabel="Ω", ylabel="Lyapunovs", label = "")
+plot!(omega, pylist_lyap[:,3], markersize=1.0, color = 3, xlabel="Ω", ylabel="Lyapunovs", label = "")
+plot!(omega, pylist_lyap[:,4], markersize=1.0, color = 4, xlabel="Ω", ylabel="Lyapunovs", label = "")
+plot!(omega, pylist_lyap[:,5], markersize=1.0, color = 5, xlabel="Ω", ylabel="Lyapunovs", label = "")
+plot!(omega, pylist_lyap[:,6], markersize=1.0, color = 6, xlabel="Ω", ylabel="Lyapunovs", label = "")
+p01_no = plot!(omega, pylist_lyap[:,7], markersize=1.0, color = 7, xlabel="Ω", ylabel="Lyapunovs", label = "")
+
 p02 = plot(omega, eta_mean[:], markersize=1.0, color = 1, xlabel="Ω", ylabel="eta_mean", label = "")
 
 p03 = scatter(omega, f1_max, markersize=1.5, legend=:none, color = "black", xlabel="Ω", ylabel="Φ1max")
 
 plot(p01, p02, p03, layout = (3, 1))
 savefig("Figures/figStrobLyapEta.png")
+
+plot(p01_no, p02, p03, layout = (3, 1))
+savefig("Figures/figStrobLyapEta_No.png")
 
 ################################################################################
 
@@ -201,6 +299,10 @@ scatter!(omega01, f01_max[:,15,:], markersize=1.5, legend=:none, color = "black"
 
 
 savefig("Figures/figStrob.png")
+
+################################################################################
+
+
 
 ################################################################################
 
