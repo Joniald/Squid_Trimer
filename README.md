@@ -1,1 +1,1 @@
-# Squid Trimer. This is a project where we study the dynamic of three coupled SQUID's. All programs are in master branch. 
+# Squid Trimer. This is a project where we study the dynamic of three coupled SQUID's. All programs are in master branch. fac_omega and lambda_omega are the parameters space and have been split into different files for a faster calculation in a cluster. 
