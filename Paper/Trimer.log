@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.8.30)  10 APR 2021 10:40
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.8.30)  21 APR 2021 16:29
 entering extended mode
 **./Trimer.tex
 (Trimer.tex
@@ -347,94 +347,98 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 117.
 ("C:\Users\User\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<Fig00.pdf, id=1, 425.59pt x 659.46375pt>
+Overfull \vbox (10.32481pt too high) has occurred while \output is active []
+
+
+[1{C:/Users/User/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+<Fig00.pdf, id=19, 425.59pt x 659.46375pt>
 File: Fig00.pdf Graphic file (type pdf)
 <use Fig00.pdf>
-Package pdftex.def Info: Fig00.pdf  used on input line 161.
+Package pdftex.def Info: Fig00.pdf  used on input line 238.
 (pdftex.def)             Requested size: 114.91083pt x 178.05759pt.
-<Fig01.png, id=2, 426.09187pt x 255.20343pt>
+<Fig01.png, id=20, 426.09187pt x 255.20343pt>
 File: Fig01.png Graphic file (type png)
 <use Fig01.png>
-Package pdftex.def Info: Fig01.png  used on input line 168.
+Package pdftex.def Info: Fig01.png  used on input line 245.
 (pdftex.def)             Requested size: 340.87395pt x 204.16301pt.
-<Fig02.png, id=4, 451.6875pt x 295.1025pt>
+ [2 <./Fig00.pdf>]
+<Fig02.png, id=252, 451.6875pt x 295.1025pt>
 File: Fig02.png Graphic file (type png)
 <use Fig02.png>
-Package pdftex.def Info: Fig02.png  used on input line 173.
+Package pdftex.def Info: Fig02.png  used on input line 269.
 (pdftex.def)             Requested size: 248.42888pt x 162.30685pt.
 
-Overfull \hbox (2.42888pt too wide) in paragraph at lines 173--174
+Overfull \hbox (2.42888pt too wide) in paragraph at lines 269--270
  [][] 
  []
 
-<Fig03.png, id=5, 2127.44812pt x 596.2275pt>
+<Fig03.png, id=253, 2127.44812pt x 596.2275pt>
 File: Fig03.png Graphic file (type png)
 <use Fig03.png>
-Package pdftex.def Info: Fig03.png  used on input line 178.
+Package pdftex.def Info: Fig03.png  used on input line 277.
 (pdftex.def)             Requested size: 531.86073pt x 149.0565pt.
 
-Overfull \hbox (21.86073pt too wide) in paragraph at lines 178--179
+Overfull \hbox (21.86073pt too wide) in paragraph at lines 277--278
  [][] 
  []
 
-<Fig04_A.png, id=6, 468.24937pt x 418.56375pt>
+[3 <./Fig01.png> <./Fig02.png>]
+<Fig04_A.png, id=261, 468.24937pt x 418.56375pt>
 File: Fig04_A.png Graphic file (type png)
 <use Fig04_A.png>
-Package pdftex.def Info: Fig04_A.png  used on input line 188.
+Package pdftex.def Info: Fig04_A.png  used on input line 304.
 (pdftex.def)             Requested size: 257.53793pt x 230.21077pt.
 
-Overfull \hbox (11.53793pt too wide) in paragraph at lines 188--189
+Overfull \hbox (11.53793pt too wide) in paragraph at lines 304--305
  [][] 
  []
 
-<Fig04_B.png, id=7, 469.755pt x 415.5525pt>
+<Fig04_B.png, id=262, 469.755pt x 415.5525pt>
 File: Fig04_B.png Graphic file (type png)
 <use Fig04_B.png>
-Package pdftex.def Info: Fig04_B.png  used on input line 193.
+Package pdftex.def Info: Fig04_B.png  used on input line 309.
 (pdftex.def)             Requested size: 258.36604pt x 228.55458pt.
 
-Overfull \hbox (12.36604pt too wide) in paragraph at lines 193--194
+Overfull \hbox (12.36604pt too wide) in paragraph at lines 309--310
  [][] 
  []
 
-[1{C:/Users/User/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./Fig00.pd
-f>] (Trimer.bbl) [2 <./Fig01.png> <./Fig02.png>] [3 <./Fig03.png> <./Fig04_A.pn
-g>] [4 <./Fig04_B.png>] (Trimer.aux) ) 
+(Trimer.bbl [4 <./Fig03.png>] [5 <./Fig04_A.png> <./Fig04_B.png>]) [6]
+(Trimer.aux) ) 
 Here is how much of TeX's memory you used:
- 4633 strings out of 492895
- 62233 string characters out of 3124202
- 150357 words of memory out of 3000000
- 8474 multiletter control sequences out of 15000+200000
+ 4649 strings out of 492895
+ 62401 string characters out of 3124202
+ 168822 words of memory out of 3000000
+ 8490 multiletter control sequences out of 15000+200000
  11723 words of font info for 46 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,16n,28p,1324b,304s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Users/User/AppData/Local/Programs/MiK
-TeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/User/AppData/Local/
-Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/User/App
-Data/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Us
-ers/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi1
-0.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfo
-nts/cm/cmmi6.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/p
-ublic/amsfonts/cm/cmmi7.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/fo
-nts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/User/AppData/Local/Programs/Mi
-KTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/User/AppData/Local/
-Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/User/AppD
-ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users
-/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb
-><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/c
-m/cmr8.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/
-amsfonts/cm/cmr9.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/fonts/typ
-e1/public/amsfonts/cm/cmsy10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2
-.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/User/AppData/Local/Progra
-ms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/User/AppData/L
-ocal/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/Use
-r/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti9.pfb><C
+ 41i,16n,28p,1467b,304s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publ
+ic/amsfonts/cm/cmbx12.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/User/AppData/Local/Programs/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/User/AppData/Local/P
+rograms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/User/App
+Data/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Use
+rs/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.
+pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfont
+s/cm/cmmi7.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pub
+lic/amsfonts/cm/cmmi9.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/User/AppData/Local/Programs/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/User/AppData/Local/Pro
+grams/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/User/AppData
+/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Us
+er/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C
 :/Users/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
-mtt10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/a
-msfonts/symbols/msam10.pfb>
-Output written on Trimer.pdf (4 pages, 1649741 bytes).
+mr9.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/ams
+fonts/cm/cmsy10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9/fonts/type
+1/public/amsfonts/cm/cmsy6.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/User/AppData/Local/Programs
+/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/User/AppData/Loc
+al/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Users/User/
+AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on Trimer.pdf (6 pages, 1675273 bytes).
 PDF statistics:
- 330 PDF objects out of 1000 (max. 8388607)
+ 336 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

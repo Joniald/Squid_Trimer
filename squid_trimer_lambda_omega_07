@@ -1,0 +1,93 @@
+using DifferentialEquations
+using DynamicalSystems
+import Statistics
+using MAT
+
+@inline @inbounds function squid(u, p, t)
+   g, v, fac, fdc, e, om = p
+   x1, x2, x3, y1, y2, y3, z = u
+   du1 = y1
+   du2 = y2
+   du3 = y3
+   du4 = -g*y1 -v*sin(2*pi*x1) + (64/(64-129*e*e+16*e*e*e))*( (1-e*e-e+(e*e/8)+e*e-(e/8))*(fac*cos(z) + fdc)      -(1-e*e)*x1 -(-e+(e*e/8))*x2 -(e*e-(e/8))*x3 )
+   du5 = -g*y2 -v*sin(2*pi*x2) + (64/(64-129*e*e+16*e*e*e))*( (-e+(e*e/8)+1-(e*e/64)-e+(e*e/8))*(fac*cos(z) + fdc) -(-e+(e*e/8))*x1 -(1-(e*e/64))*x2 -(-e+(e*e/8))*x3 )
+   du6 = -g*y3 -v*sin(2*pi*x3) + (64/(64-129*e*e+16*e*e*e))*( (e*e-(e/8)-e+(e*e/8)+1-e*e)*(fac*cos(z) + fdc)      -(e*e-(e/8))*x1 -(-e+(e*e/8))*x2 -(1-e*e)*x3 )
+   du7 = om
+   return SVector{7}(du1, du2, du3, du4, du5, du6, du7)
+end
+
+u0 = [4.84, 0.0, 4.84, 0.0, 0.0, 0.0, 0]
+p = [0.024, 0.1369, 0.02, 0, 0.11, 1.1]
+ds = ContinuousDynamicalSystem(squid, u0, p)
+tinteg =  tangent_integrator(ds, 7)
+
+#lamda =0.02025:0.00025:0.04
+#lamda =0.04025:0.00025:0.06
+#lamda =0.06025:0.00025:0.08
+#lamda =0.08025:0.00025:0.1
+#lamda = 0.10025:0.00025:0.12
+#lamda = 0.12025:0.00025:0.14
+lamda = 0.14025:0.00025:0.16
+#lamda = 0.16025:0.00025:0.18
+
+
+n1 = zeros(length(lamda))
+for (i, lam) in enumerate(lamda)
+    n1[i] = lam
+end
+
+
+per=4.65:0.0001:5.19
+omega = zeros(length(per))
+pylist_lyap = zeros(length(lamda),length(per),7)
+corr = zeros(length(lamda),length(per))
+eta_mean = zeros(length(lamda),length(per))
+
+for j = 1:length(lamda)
+  set_parameter!(ds,5,n1[j])
+  s = rand(6)
+  u0 = [5*s[1], 5*s[2], 5*s[3], 5*s[4], 5*s[5], 5*s[6], 0]
+
+    for (i, period) in enumerate(per)
+
+      om = (2*pi)/period
+      set_parameter!(ds,6,om)
+      data = trajectory(ds, 1000*period, dt=period*0.01, u0, Ttr = 1000*period)
+
+      corr[j,i] = Statistics.cor(data[:,1],data[:,3])
+
+      eta_par = sqrt.( (data[:,1]-data[:,3]).*(data[:,1]-data[:,3])  +  (data[:,4]-data[:,6]).*(data[:,4]-data[:,6]))
+      eta_mean[j,i] = Statistics.mean(eta_par)
+
+      reinit!(tinteg, u0, orthonormal(7, 7))
+      pylist_lyap[j,i,:] = lyapunovs(tinteg, 1000*period, 0.5*period, 1000*period)
+
+      omega[i]=om
+
+      s = 0.00001*rand(6)
+      u0 = [data[end,1]+s[1],data[end,2]+s[2],data[end,3]+s[3],data[end,4]+s[4],data[end,5]+s[5],data[end,6]+s[6],0]
+
+      println(i,",",j,"")
+  end
+end
+
+
+file = matopen("lamda07.mat", "w")
+write(file, "lamda07", n1)
+close(file)
+
+file = matopen("omeg07.mat", "w")
+write(file, "omeg07", omega)
+close(file)
+
+file = matopen("lyap07.mat", "w")
+write(file, "lyap07", pylist_lyap)
+close(file)
+
+file = matopen("corr07.mat", "w")
+write(file, "corr07", corr)
+close(file)
+
+file = matopen("eta07.mat", "w")
+write(file, "eta07", eta_mean)
+close(file)

@@ -122,6 +122,9 @@ period = (2*pi)/om
 set_parameter!(ds,6,om)
 set_parameter!(ds,5,eta)
 dataCS = trajectory(ds, t_interval, dt = dtt, u0, Ttr = 10000*period)
+# Calculating all Lyapunov exponents
+reinit!(tinteg, u0, orthonormal(7, 7))
+lyapunovs(tinteg, 1000*period, 0.5*period, 1000*period)
 etaParCS = sqrt.( (dataCS[:,1]-dataCS[:,3]).*(dataCS[:,1]-dataCS[:,3])  +  (dataCS[:,4]-dataCS[:,6]).*(dataCS[:,4]-dataCS[:,6]))
 intPeriods = 8000
 pCS2 = plot( ((intPeriods*100):(periods*100))./100, etaParCS[(intPeriods*100):end-1], ylim=(0.0, 1.0), markersize=0.3, color = 1, xlabel="1/T", ylabel="eta", label = "")
@@ -134,6 +137,10 @@ period = (2*pi)/om
 set_parameter!(ds,6,om)
 set_parameter!(ds,5,eta)
 dataCI = trajectory(ds, t_interval, dt = dtt, u0, Ttr = 10000*period)
+# Calculating all Lyapunov exponents
+reinit!(tinteg, u0, orthonormal(7, 7))
+lyapunovs(tinteg, 1000*period, 0.5*period, 1000*period)
+########
 etaParCI = sqrt.( (dataCI[:,1]-dataCI[:,3]).*(dataCI[:,1]-dataCI[:,3])  +  (dataCI[:,4]-dataCI[:,6]).*(dataCI[:,4]-dataCI[:,6]))
 intPeriods = 9000
 pCI2 = plot( ((intPeriods*100):(periods*100))./100, etaParCI[(intPeriods*100):end-1], ylim=(0.0, 1.0), markersize=0.3, color = 1, xlabel="1/T", ylabel="eta", label = "")
@@ -146,6 +153,10 @@ period = (2*pi)/om
 set_parameter!(ds,6,om)
 set_parameter!(ds,5,eta)
 dataHCI = trajectory(ds, t_interval, dt = dtt, u0, Ttr = 10000*period)
+# Calculating all Lyapunov exponents
+reinit!(tinteg, u0, orthonormal(7, 7))
+lyapunovs(tinteg, 1000*period, 0.5*period, 1000*period)
+########
 etaParHCI = sqrt.( (dataHCI[:,1]-dataHCI[:,3]).*(dataHCI[:,1]-dataHCI[:,3])  +  (dataHCI[:,4]-dataHCI[:,6]).*(dataHCI[:,4]-dataHCI[:,6]))
 intPeriods = 9000
 pHCI2 = plot( ((intPeriods*100):(periods*100))./100, etaParHCI[(intPeriods*100):end-1], ylim=(0.0, 1.0), markersize=0.3, color = 1, xlabel="1/T", ylabel="eta", label = "")
